@@ -1,7 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Windows;
-using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerControllerController : MonoBehaviour
 {
