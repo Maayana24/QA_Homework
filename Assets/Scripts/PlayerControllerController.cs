@@ -27,13 +27,11 @@ public class PlayerControllerController : MonoBehaviour
     }
     private void OnInteract(InputValue value)
     {
-        Debug.Log("E pressed");
-        Collider[] overlaps = Physics.OverlapSphere(coll.center, coll.height);
+        Collider[] overlaps = Physics.OverlapSphere(transform.position, coll.height/2);
         foreach (Collider overlappingColl in overlaps)
         {
             if(overlappingColl.tag == "Torch")
             {
-                Debug.Log("Im in");
                 overlappingColl.GetComponent<Torch>().FlameOn();
             }
         }
