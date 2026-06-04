@@ -1,0 +1,41 @@
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.Windows;
+using static UnityEngine.Rendering.DebugUI;
+
+public class PlayerControllerController : MonoBehaviour
+{
+    [SerializeField] Rigidbody rb;
+    [SerializeField] float speed;
+    [SerializeField] CapsuleCollider coll;
+    Vector2 movement;
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        rb.linearVelocity = new Vector3(movement.x, rb.linearVelocity.y, movement.y);
+    }
+
+    private void OnMove(InputValue value)
+    {
+        movement = value.Get<Vector2>().normalized * speed;
+    }
+    private void OnInteract(InputValue value)
+    {
+        Debug.Log("E pressed");
+        Collider[] overlaps = Physics.OverlapSphere(coll.center, coll.height);
+        foreach (Collider overlappingColl in overlaps)
+        {
+            if(overlappingColl.tag == "Torch")
+            {
+                Debug.Log("Im in");
+                overlappingColl.GetComponent<Torch>().FlameOn();
+            }
+        }
+    }
+}

@@ -4,15 +4,10 @@ public class Torch : MonoBehaviour
 {
     [SerializeField] GameObject lightSource;
     [SerializeField] MeshRenderer torchHead;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] Material headOnMat;
+    public void FlameOn()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        lightSource.SetActive(true);
+        torchHead.material = headOnMat;
     }
 }
