@@ -1,10 +1,11 @@
-using System.Collections;
 using NUnit.Framework;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
-public class TestTorches
+public class TestTorches : InputTestFixture
 {
     // A Test behaves as an ordinary method
     [Test]
@@ -20,6 +21,10 @@ public class TestTorches
     {
         SceneManager.LoadScene("scene");
         yield return new WaitForSeconds(1);
+
+        Assert.IsNotNull(SceneManager.GetActiveScene(), "Scene failed to load");
+        Assert.AreEqual("scene", SceneManager.GetActiveScene().name);
+
         Torch[] torches = Object.FindObjectsByType<Torch>(FindObjectsSortMode.None);
         Debug.Log(torches.Length);
         bool islit = false;
@@ -61,5 +66,21 @@ public class TestTorches
             Debug.Log(t.IsLit);
             Assert.IsTrue(t.IsLit);
         }
+    }
+
+    [UnityTest]
+    public IEnumerator RegressionTest()
+    {
+        SceneManager.LoadScene("scene");
+        yield return new WaitForSeconds(1);
+        var keyboard = InputSystem.AddDevice<Keyboard>();
+        Press(keyboard.eKey);
+        Release(keyboard.eKey); Torch[] torches = Object.FindObjectsByType<Torch>(FindObjectsSortMode.None);
+        bool islit = false;
+        foreach (var t in torches)
+        {
+            islit |= t.IsLit;
+        }
+        Assert.IsTrue(!islit);
     }
 }
