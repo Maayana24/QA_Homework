@@ -9,7 +9,12 @@ public class TestTorches
     [Test]
     public void TestTorchesSimplePasses()
     {
-        throw new System.Exception();
+        GameObject go = new GameObject();
+        Torch torch = go.AddComponent<Torch>();
+
+        torch.FlameOn();
+
+        Assert.IsTrue(torch.IsLit);
     }
 
     // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
