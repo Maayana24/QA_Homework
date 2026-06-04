@@ -25,10 +25,15 @@ public class PlayerControllerController : MonoBehaviour
     }
     private void OnInteract(InputValue value)
     {
+        TestTorchesInteraction();
+    }
+
+    public void TestTorchesInteraction()
+    {
         Collider[] overlaps = Physics.OverlapSphere(transform.position, coll.height);
         foreach (Collider overlappingColl in overlaps)
         {
-            if(overlappingColl.tag == "Torch")
+            if (overlappingColl.tag == "Torch")
             {
                 overlappingColl.GetComponent<Torch>().FlameOn();
             }
