@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
-using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerControllerController : MonoBehaviour
 {
@@ -27,11 +26,13 @@ public class PlayerControllerController : MonoBehaviour
     }
     private void OnInteract(InputValue value)
     {
-        Collider[] overlaps = Physics.OverlapSphere(transform.position, coll.height/2);
+        Debug.Log("E pressed");
+        Collider[] overlaps = Physics.OverlapSphere(coll.center, coll.height);
         foreach (Collider overlappingColl in overlaps)
         {
             if(overlappingColl.tag == "Torch")
             {
+                Debug.Log("Im in");
                 overlappingColl.GetComponent<Torch>().FlameOn();
             }
         }
