@@ -1,3 +1,4 @@
+using log4net.Util;
 using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
-public class TestTorches : InputTestFixture
+public class TestTorches
 {
     // A Test behaves as an ordinary method
     [Test]
@@ -25,62 +26,96 @@ public class TestTorches : InputTestFixture
         Assert.IsNotNull(SceneManager.GetActiveScene(), "Scene failed to load");
         Assert.AreEqual("scene", SceneManager.GetActiveScene().name);
 
-        Torch[] torches = Object.FindObjectsByType<Torch>(FindObjectsSortMode.None);
-        Debug.Log(torches.Length);
-        bool islit = false;
-        foreach (var t in torches)
-        {
-            islit |= t.IsLit;
-        }
-        Assert.IsTrue(islit);
+        if (CheckTorches() != 0)
+            Assert.IsTrue(false);
+        else Assert.IsFalse(true);
     }
 
     [UnityTest]
-    public IEnumerator IntegrationTest()
+    public IEnumerator IntegrationTest_InteractionOfTorchAndPlayer()
+    {
+        SceneManager.LoadScene("scene");
+        yield return new WaitForSeconds(1);
+        PlayerControllerController player = Object.FindAnyObjectByType<PlayerControllerController>();
+        player.TestTorchesInteraction();
+        if (CheckTorches() != 1)
+            Assert.IsTrue(false);
+        else Assert.IsTrue(true);
+    }
+
+    [UnityTest]
+    public IEnumerator RegressionTest_InteractionInput() //Interaction didn't work because the logic used local scale on the global grid
     {
         SceneManager.LoadScene("scene");
         yield return new WaitForSeconds(1);
         PlayerControllerController player = Object.FindAnyObjectByType<PlayerControllerController>();
         player.TestTorchesInteraction();
         Torch[] torches = Object.FindObjectsByType<Torch>(FindObjectsSortMode.None);
-        bool islit = false;
-        foreach (var t in torches)
+
+        Torch litTorch = null;
+        bool oneTorch = false;
+        for (int i = 0; i < torches.Length; i++)
         {
-            islit |= t.IsLit;
+            if(torches[i].IsLit == true)
+            {
+                litTorch = torches[i];
+                Assert.IsFalse(oneTorch);
+                oneTorch = true;
+            }
         }
-        Assert.IsTrue(!islit);
+
+        Assert.IsTrue(litTorch);
+
+        Collider[] overlaps = Physics.OverlapSphere(player.transform.position, player.coll.height);
+        bool isInRange = false;
+        foreach (Collider overlappingColl in overlaps)
+        {
+            if (overlappingColl.tag == "Torch")
+            {
+                if (litTorch == overlappingColl.GetComponent<Torch>()) isInRange = true;
+            }
+        }
+        Assert.IsTrue(isInRange);
     }
 
-    // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
-    // `yield return null;` to skip a frame.
     [UnityTest]
-    public IEnumerator TestTorchesWithEnumeratorPasses()
+    public IEnumerator FunctionalTest_PlayerCanLightTorch()
     {
         SceneManager.LoadScene("scene");
         yield return new WaitForSeconds(1);
 
+        Assert.IsNotNull(SceneManager.GetActiveScene(), "Scene failed to load");
+        Assert.AreEqual("scene", SceneManager.GetActiveScene().name);
+
+        if (CheckTorches() != 0)
+            Assert.IsTrue(false);
+
+        PlayerControllerController player = Object.FindAnyObjectByType<PlayerControllerController>();
+        player.TestTorchesInteraction();
+
+        if (CheckTorches() != 1)
+            Assert.IsTrue(false);
+
+        player.TestMove(Vector2.up);
+        yield return new WaitForSeconds(1);
+        player.TestMove(Vector2.zero);
+        player.TestTorchesInteraction();
+
+        if (CheckTorches() != 2)
+            Assert.IsTrue(false);
+        else Assert.IsTrue(true);
+    }
+
+
+    private int CheckTorches()
+    {
         Torch[] torches = Object.FindObjectsByType<Torch>(FindObjectsSortMode.None);
-        Debug.Log(torches.Length);
-        foreach (var t in torches)
-        {
-            Debug.Log(t.IsLit);
-            Assert.IsTrue(t.IsLit);
-        }
-    }
-
-    [UnityTest]
-    public IEnumerator RegressionTest() //had input bugs
-    {
-        SceneManager.LoadScene("scene");
-        yield return new WaitForSeconds(1);
-        var keyboard = InputSystem.AddDevice<Keyboard>();
-        Press(keyboard.eKey);
-        Release(keyboard.eKey); Torch[] torches = Object.FindObjectsByType<Torch>(FindObjectsSortMode.None);
         bool islit = false;
+        int i = 0;
         foreach (var t in torches)
         {
-            islit |= t.IsLit;
+            if (t.IsLit) i++;
         }
-        Assert.IsTrue(!islit);
+        return i;
     }
 }

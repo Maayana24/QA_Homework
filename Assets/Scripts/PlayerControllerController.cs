@@ -5,7 +5,7 @@ public class PlayerControllerController : MonoBehaviour
 {
     [SerializeField] Rigidbody rb;
     [SerializeField] float speed;
-    [SerializeField] CapsuleCollider coll;
+    [SerializeField] public CapsuleCollider coll;
     Vector2 movement;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -21,11 +21,16 @@ public class PlayerControllerController : MonoBehaviour
 
     private void OnMove(InputValue value)
     {
-        movement = value.Get<Vector2>().normalized * speed;
+        TestMove(value.Get<Vector2>());
     }
     private void OnInteract(InputValue value)
     {
         TestTorchesInteraction();
+    }
+
+    public void TestMove(Vector2 value)
+    {
+        movement = value.normalized * speed;
     }
 
     public void TestTorchesInteraction()
