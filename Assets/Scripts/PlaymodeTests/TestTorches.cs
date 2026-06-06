@@ -9,7 +9,7 @@ public class TestTorches : InputTestFixture
 {
     // A Test behaves as an ordinary method
     [Test]
-    public void UnitTest()
+    public void UnitTest_TorchIsUnlitOnDefault()
     {
         GameObject go = new GameObject();
         var torch = go.AddComponent<Torch>();
@@ -17,7 +17,7 @@ public class TestTorches : InputTestFixture
     }
 
     [UnityTest]
-    public IEnumerator SmokeTest()
+    public IEnumerator SmokeTest_SceneAndTorchesLoadCorrectly()
     {
         SceneManager.LoadScene("scene");
         yield return new WaitForSeconds(1);
@@ -69,7 +69,7 @@ public class TestTorches : InputTestFixture
     }
 
     [UnityTest]
-    public IEnumerator RegressionTest()
+    public IEnumerator RegressionTest() //had input bugs
     {
         SceneManager.LoadScene("scene");
         yield return new WaitForSeconds(1);
