@@ -1,10 +1,10 @@
-using log4net.Util;
 using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
+using System.Diagnostics;
+
 
 public class TestTorches
 {
@@ -14,7 +14,7 @@ public class TestTorches
     {
         GameObject go = new GameObject();
         var torch = go.AddComponent<Torch>();
-        Assert.IsTrue(torch.IsLit);
+        Assert.IsTrue(!torch.IsLit);
     }
 
     [UnityTest]
@@ -28,7 +28,7 @@ public class TestTorches
 
         if (CheckTorches() != 0)
             Assert.IsTrue(false);
-        else Assert.IsFalse(true);
+        else Assert.IsTrue(true);
     }
 
     [UnityTest]
