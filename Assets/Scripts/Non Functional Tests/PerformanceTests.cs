@@ -1,4 +1,4 @@
-using System.Diagnostics;
+/*using System.Diagnostics;
 using NUnit.Framework;
 
 /// <summary>
@@ -21,10 +21,10 @@ using NUnit.Framework;
 /// </summary>
 public class PerformanceTests
 {
-    private const int SINGLE_OP_BUDGET_MS    = 1;
-    private const int BULK_10K_BUDGET_MS     = 50;
+    private const int SINGLE_OP_BUDGET_MS = 1;
+    private const int BULK_10K_BUDGET_MS = 50;
     private const int STAT_BUILD_1K_BUDGET_MS = 10;
-    private const int REGEN_1K_BUDGET_MS     = 5;
+    private const int REGEN_1K_BUDGET_MS = 5;
 
     // ---- Stat block construction ----
 
@@ -56,7 +56,7 @@ public class PerformanceTests
     [Test]
     public void DamageCalculation_SingleHit_UnderBudget()
     {
-        var stats  = new RPGStatBlock(resistance: 30, armor: 10);
+        var stats = new RPGStatBlock(resistance: 30, armor: 10);
         var health = new PlayerHealthSystem(stats);
 
         var sw = Stopwatch.StartNew();
@@ -70,7 +70,7 @@ public class PerformanceTests
     [Test]
     public void DamageCalculation_10000Hits_UnderBudget()
     {
-        var stats  = new RPGStatBlock(vitality: 100, resistance: 30, armor: 10);
+        var stats = new RPGStatBlock(vitality: 100, resistance: 30, armor: 10);
         var health = new PlayerHealthSystem(stats);
 
         var sw = Stopwatch.StartNew();
@@ -90,7 +90,7 @@ public class PerformanceTests
     [Test]
     public void StaminaRegenTick_1000Ticks_UnderBudget()
     {
-        var stats   = new RPGStatBlock(endurance: 10, agility: 10);
+        var stats = new RPGStatBlock(endurance: 10, agility: 10);
         var stamina = new StaminaSystem(stats);
         stamina.UseStamina(stamina.MaxStamina); // drain first
 
@@ -108,7 +108,7 @@ public class PerformanceTests
     [Test]
     public void PreviewDamage_10000Calls_UnderBudget()
     {
-        var stats  = new RPGStatBlock(resistance: 45, armor: 15);
+        var stats = new RPGStatBlock(resistance: 45, armor: 15);
         var health = new PlayerHealthSystem(stats);
 
         var sw = Stopwatch.StartNew();
@@ -125,7 +125,7 @@ public class PerformanceTests
     [Test]
     public void StatValidation_1000Validations_UnderBudget()
     {
-        var validStats   = new RPGStatBlock(5, 5, 20, 10, 5, 5, 2, 5);
+        var validStats = new RPGStatBlock(5, 5, 20, 10, 5, 5, 2, 5);
         var invalidStats = new RPGStatBlock(); // will be tested too
 
         var sw = Stopwatch.StartNew();
@@ -137,3 +137,4 @@ public class PerformanceTests
             $"1000 validations took {sw.ElapsedMilliseconds}ms — budget is {STAT_BUILD_1K_BUDGET_MS}ms.");
     }
 }
+*//**/

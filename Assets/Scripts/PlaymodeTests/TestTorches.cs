@@ -1,13 +1,68 @@
 using NUnit.Framework;
 using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Unity.PerformanceTesting.Data;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
-using System.Diagnostics;
 
 
 public class TestTorches
 {
+    private const int Load1ObjectBudget = 50;
+    private const int Light50TorchesBudget = 100;
+    private const string PlayerPath = "Assets/Prefabs/Player.prefab";
+    private const string TorchPath = "Assets/Prefabs/Torch.prefab";
+
+    [Test]
+    public void StressTest_MinFloatPlayerSpeed()
+    {
+        PlayerControllerController player = AssetDatabase.LoadAssetAtPath<PlayerControllerController>(PlayerPath);
+        PlayerControllerController p = GameObject.Instantiate(player);
+        p.SetSpeed(float.MinValue);
+        Assert.Greater(p.Speed, 0);
+    }
+
+    [Test]
+    public void PerformanceTest_SpawnPlayer()
+    {
+        PlayerControllerController player = AssetDatabase.LoadAssetAtPath<PlayerControllerController>(PlayerPath);
+        var sw = Stopwatch.StartNew();
+        PlayerControllerController p = GameObject.Instantiate(player);
+        sw.Stop();
+
+        Assert.Less(sw.ElapsedMilliseconds, Load1ObjectBudget,
+            $"Player Spawn took {sw.ElapsedMilliseconds}ms — budget is {Load1ObjectBudget}ms.");
+    }
+
+    [UnityTest]
+    public IEnumerator LoadTest_Light50Torches()
+    {
+        List<Torch> torches = new List<Torch>();
+        Torch torch = AssetDatabase.LoadAssetAtPath<Torch>(TorchPath);
+
+
+        for (int i = 0; i < 50; i++)
+        {
+            Torch t = GameObject.Instantiate(torch);
+            torches.Add(t);
+        }
+
+        yield return null; // let all Awakes run
+
+        var sw = Stopwatch.StartNew();
+        foreach (var t in torches)
+            t.FlameOn();
+        sw.Stop();
+
+        Assert.Less(sw.ElapsedMilliseconds, Light50TorchesBudget,
+            $"50 torches lighting {sw.ElapsedMilliseconds}ms.");
+    }
+
+
     // A Test behaves as an ordinary method
     [Test]
     public void UnitTest_TorchIsUnlitOnDefault()

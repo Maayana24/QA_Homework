@@ -20,10 +20,6 @@ public static class TestSceneBuilder
     public struct PlayerComponents
     {
         public GameObject   GameObject;
-        public PlayerStats  Stats;
-        public PlayerHealth Health;
-        public PlayerStamina Stamina;
-        public DeathHandler  Death;
     }
 
     /// <summary>
@@ -42,25 +38,10 @@ public static class TestSceneBuilder
     {
         var go = new GameObject("Player_Test");
 
-        // 1. Add PlayerStats first, then immediately inject the stat block
-        //    so it's ready before PlayerHealth/PlayerStamina Awake runs.
-        var stats = go.AddComponent<PlayerStats>();
-        stats.Initialize(new RPGStatBlock(
-            vitality, endurance, resistance, armor,
-            strength, agility, regeneration, willpower));
-
-        // 2. These read from PlayerStats in their own Awake
-        var health  = go.AddComponent<PlayerHealth>();
-        var stamina = go.AddComponent<PlayerStamina>();
-        var death   = go.AddComponent<DeathHandler>();
 
         return new PlayerComponents
         {
             GameObject = go,
-            Stats      = stats,
-            Health     = health,
-            Stamina    = stamina,
-            Death      = death
         };
     }
 

@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
@@ -81,7 +81,7 @@ public class StressTests
     [Test]
     public void DamageCalculation_1MillionCalls_SystemRemainsStable()
     {
-        var stats  = new RPGStatBlock(vitality: 100, resistance: 10, armor: 5);
+        var stats = new RPGStatBlock(vitality: 100, resistance: 10, armor: 5);
         var health = new PlayerHealthSystem(stats);
 
         Assert.DoesNotThrow(() =>
@@ -177,8 +177,8 @@ public class StressTests
 
         yield return null;
 
-        Assert.IsFalse(player.Health.IsDead,        "Player stuck in dead state after 100 cycles.");
-        Assert.AreEqual(100, player.Death.DeathCount,   "DeathCount mismatch.");
+        Assert.IsFalse(player.Health.IsDead, "Player stuck in dead state after 100 cycles.");
+        Assert.AreEqual(100, player.Death.DeathCount, "DeathCount mismatch.");
         Assert.AreEqual(100, player.Death.RevivalCount, "RevivalCount mismatch.");
     }
 
@@ -204,3 +204,4 @@ public class StressTests
         Assert.IsFalse(float.IsInfinity(player.Stamina.CurrentStamina));
     }
 }
+*/

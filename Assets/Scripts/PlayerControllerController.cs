@@ -4,9 +4,11 @@ using UnityEngine.InputSystem;
 public class PlayerControllerController : MonoBehaviour
 {
     [SerializeField] Rigidbody rb;
-    [SerializeField] float speed;
+    [field: SerializeField] public float Speed {  get; private set; }
     [SerializeField] public CapsuleCollider coll;
     Vector2 movement;
+
+    private float minSpeed = 1;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -30,7 +32,13 @@ public class PlayerControllerController : MonoBehaviour
 
     public void TestMove(Vector2 value)
     {
-        movement = value.normalized * speed;
+        movement = value.normalized * Speed;
+    }
+
+    public void SetSpeed(float newSpeed)
+    {
+        if(newSpeed < minSpeed) Speed = minSpeed;
+        else Speed = newSpeed;
     }
 
     public void TestTorchesInteraction()
