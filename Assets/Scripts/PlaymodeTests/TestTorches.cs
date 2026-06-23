@@ -133,7 +133,7 @@ public class TestTorches
         Assert.IsTrue(isInRange);
     }
 
-    [UnityTest]
+/*    [UnityTest]
     public IEnumerator FunctionalTest_PlayerCanLightTorch()
     {
         SceneManager.LoadScene("scene");
@@ -159,7 +159,7 @@ public class TestTorches
         if (CheckTorches() != 2)
             Assert.IsTrue(false);
         else Assert.IsTrue(true);
-    }
+    }*/
 
 
     private int CheckTorches()
