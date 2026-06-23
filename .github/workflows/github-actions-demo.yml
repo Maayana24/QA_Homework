@@ -1,18 +1,27 @@
-﻿name: Acquire activation file
+﻿name: Unity Tests
+
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+
 jobs:
-  activation:
-    name: Request manual activation file 🔑
+  test:
+    name: Run Unity Tests
     runs-on: ubuntu-latest
+
     steps:
-      # Request manual activation file
-      - name: Request manual activation file
-        id: getManualLicenseFile
-        uses: game-ci/unity-request-activation-file@v2
-      # Upload artifact (Unity_v20XX.X.XXXX.alf)
-      - name: Expose as artifact
-        uses: actions/upload-artifact@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Run Unity Tests
+        uses: game-ci/unity-test-runner@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          name: ${{ steps.getManualLicenseFile.outputs.filePath }}
-          path: ${{ steps.getManualLicenseFile.outputs.filePath }}
+          projectPath: .
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
