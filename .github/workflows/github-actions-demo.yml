@@ -3,46 +3,6 @@
 on: [push, pull_request]
 
 jobs:
-  # Job to build the StandaloneWindows64 platform
-  buildWindows:
-    name: Build StandaloneWindows64
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          lfs: true
-
-      - name: Cache Library folder
-        uses: actions/cache@v3
-        with:
-          path: Library
-          key: Library-StandaloneWindows64-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
-          restore-keys: |
-            Library-StandaloneWindows64-
-            Library-
-
-      - name: Free disk space (optional)
-        uses: jlumbroso/free-disk-space@v1.3.1
-
-      - name: Build with Unity
-        uses: game-ci/unity-builder@v4
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          unityVersion: 6000.3.6f1
-          targetPlatform: StandaloneWindows64
-
-      - name: Upload Build Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: Build-StandaloneWindows64
-          path: build/StandaloneWindows64
-
   # Job to run Playmode tests
   runPlaymodeTests:
     name: Run Playmode Tests
