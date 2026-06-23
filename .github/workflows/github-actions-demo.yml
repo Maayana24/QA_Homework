@@ -71,7 +71,7 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          unityVersion: 6000.0.43f1
+          unityVersion: 6000.3.6f1
           testMode: PlayMode
           # The path where test results will be generated
           artifactsPath: artifacts/TestResults/Playmode
