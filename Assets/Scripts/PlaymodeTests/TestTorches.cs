@@ -2,10 +2,8 @@ using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Unity.PerformanceTesting.Data;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
