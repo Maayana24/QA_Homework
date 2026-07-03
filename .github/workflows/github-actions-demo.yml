@@ -3,7 +3,7 @@ name: Build, Test, and Deploy Unity Project
 on: [push, pull_request]
 
 jobs:
-  # Job to build the StandaloneWindows64 platfor
+  # Job to build the StandaloneWindows64 platform
   buildWindows:
     name: Build StandaloneWindows64
     runs-on: ubuntu-latest
